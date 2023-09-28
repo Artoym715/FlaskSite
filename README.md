@@ -1,3 +1,3 @@
-# FlaskSite - 1 сайта на Flask!
+# FlaskSite - 1 сайт на Flask!
 <image src="static/img/maxresdefault.jpg" alt="Обложка">
 
