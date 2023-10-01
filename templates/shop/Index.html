@@ -3,12 +3,11 @@
 {{ super() }}
 <div class="col mt-5">
     <div class="card-body mb-5">
-        <h5 class="card-title">Особое обращение с заголовком</h5>
-        <p class="card-text">С вспомогательным текстом ниже в качестве естественного перехода к дополнительному
-            контенту.</p>
+        <h5 class="card-title">Добро пожаловать!</h5>
+        <p class="card-text">Первый сайт на Flask</p>
     </div>
-    <img src="{{ url_for('static', filename= 'img/maxresdefault.jpg')}}" class="card-img-bottom" width="300px"
-        height="600px" alt="...">
+    <img src="{{ url_for('static', filename= 'img/maxresdefault.jpg')}}" class="card-img-bottom" width="280px"
+        height="650px" alt="...">
 </div>
 
 {% endblock %}
