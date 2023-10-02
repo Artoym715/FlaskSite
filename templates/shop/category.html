@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+<div class="col">
+	<div class="card mt-3" style="width: 18rem;">
+		<a href=""></a><img src="{{ url_for('static', filename= '/img/Clothing-clothes-clipart01.jpg')}}"
+			class="card-img-top" alt="...">
+		<div class="card-body">
+			<p class="card-text"><strong>КУРТКИ</strong></p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
