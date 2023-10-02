@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
-{% for link in context.category %}
+{% for link in context.Posts %}
 <div class="col">
 	<div class="card mt-3" style="width: 18rem;">
+		<a href="{{url_for('product', name=link.nameCategory, id=link.id)}}">
 		<img src="{{ link.img }}" class="card-img-top" alt="...">
 		<div class="card-body">
 			<p class="card-text"><strong>{{ link.name }}</strong></p>
 		</div>
+		</a>
 	</div>
 </div>
 {% endfor %}

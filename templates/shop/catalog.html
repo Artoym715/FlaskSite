@@ -4,7 +4,7 @@
 <div class="col">
 	<div class="card mt-3" style="width: 18rem;">
 		{% for link in context.category %}
-		<a href="{{url_for('category')}}"><img
+		<a href="{{url_for('category',name=link.nameCategory)}}"><img
 				src="{{ url_for('static', filename= '/img/Clothing-clothes-clipart01.jpg')}}" class="card-img-top"
 				alt="...">
 			<div class="card-body">
