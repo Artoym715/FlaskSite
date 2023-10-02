@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
-<h1>Магазин</h1>
+<div class="col">
+	<div class="card mt-3" style="width: 18rem;">
+		{% for link in context.category %}
+		<a href="{{url_for('category')}}"><img
+				src="{{ url_for('static', filename= '/img/Clothing-clothes-clipart01.jpg')}}" class="card-img-top"
+				alt="...">
+			<div class="card-body">
+				<p class="card-text"><strong>{{ link.name }}</strong></p>
+			</div>
+		</a>
+	</div>
+	{% endfor %}
+</div>
+
+
 {% endblock %}
