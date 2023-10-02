@@ -51,7 +51,7 @@ def category():
                 }
             ]
     }
-    return render_template('shop/category.html', title='link.name', menu=menu, context=context)
+    return render_template('shop/category.html', title='Одежда', menu=menu, context=context)
 
 
 @app.route("/about")
