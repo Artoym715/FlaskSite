@@ -2,25 +2,32 @@
 {% block content %}
 {{ super() }}
 
-<div class="col">
-	<div class="card mt-3" style="width: 18rem;">
+
 {% if id == 1 %}
-		<img src="/static//img/s-l1600.jpg" class="card-img-top" alt="...">
-		<div class="card-body">
-			<p class="card-text"><strong>КУРТКА</strong></p>
-		</div>
-{% elif id == 2 %}
-		<img src="/static//img/bryuki-chinosy-regular-fit-straight-chernyj.jpg" class="card-img-top" alt="...">
-		<div class="card-body">
-			<p class="card-text"><strong>БРЮКИ</strong></p>
-		</div>
-{% elif id == 3 %}
-		<img src="/static//img/png-clipart-shoe-leather-adidas-puma-men-s-big-shoes-png-material-brown.png" class="card-img-top" alt="...">
-		<div class="card-body">
-			<p class="card-text"><strong>ОБУВЬ</strong></p>
-		</div>
-{% endif %}
-	</div>
+<div class="col mt-3">
+	<img src="/static//img/s-l1600.jpg" width="400px" height="600px" class="card-img-top" alt="...">
 </div>
+<div class="col">
+	<p class="card-text"><strong>КУРТКА</strong></p>
+</div>
+{% elif id == 2 %}
+<div class="col mt-3">
+	<img src="/static//img/bryuki-chinosy-regular-fit-straight-chernyj.jpg" width="400px" height="600px"
+		class="card-img-top" alt="...">
+</div>
+<div class="col">
+	<p class="card-text"><strong>БРЮКИ</strong></p>
+</div>
+{% elif id == 3 %}
+<div class="col mt-3">
+	<img src="/static//img/png-clipart-shoe-leather-adidas-puma-men-s-big-shoes-png-material-brown.png"
+		class="card-img-top" alt="...">
+</div>
+<div class="col">
+	<p class="card-text"><strong>ОБУВЬ</strong></p>
+</div>
+{% endif %}
+
+
 
 {% endblock %}
