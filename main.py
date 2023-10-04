@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
@@ -68,6 +68,12 @@ def product(name, id):
 def about():
     return render_template('shop/about.html', title='О сайте', menu=menu)
 
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == 'POST':
+        print(request.form)
+    return render_template('auth/login.html', title='Авторизация')
 
 @app.errorhandler(404)
 def pageNotFound(error):
