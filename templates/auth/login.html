@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 {{ super() }}
-<div class="col">
+<div class="col-12">
 	<h2 class="m-3">Авторизация</h2>
 </div>
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="col-12">
+	<div class="alert {{ cat }}" role="alert">
+		{{ msg }}
+	</div>
+</div>
+{% endfor %}
 <form class="mt-4" action="/login" method="post">
 	<div class="mb-3">
 		<label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>

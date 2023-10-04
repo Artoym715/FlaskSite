@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, flash
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'fdhyetrdsmpaserdf7me'
 menu = [
     {"name": "Главная", "url": "/"},
     {"name": "Магазин", "url": "/catalog/clothes"},
@@ -60,7 +60,6 @@ def category(name):
 
 @app.route("/catalog/<name>/category/product/<int:id>")
 def product(name, id):
-
     return render_template('shop/product.html', title='Одежда', menu=menu, id=id)
 
 
@@ -72,7 +71,11 @@ def about():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
-        print(request.form)
+        if len(request.form['useremail']) > 2 and len(request.form['userpassword']) > 2:
+            flash('Данные верны!', category='alert-success')
+        else:
+            flash('Не верный логин или пароль!', category='alert-danger')
+
     return render_template('auth/login.html', title='Авторизация')
 
 @app.errorhandler(404)
