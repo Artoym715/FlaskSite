@@ -1,7 +1,12 @@
-from flask import Flask, render_template, url_for, request, flash
+from flask import Flask, render_template, url_for, request,  flash, make_response, redirect
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fdhyetrdsmpaserdf7me'
+
+adminMenu = [
+
+    {"name": "Главная", "url": "/"}
+]
 menu = [
     {"name": "Главная", "url": "/"},
     {"name": "Магазин", "url": "/catalog/clothes"},
@@ -71,12 +76,33 @@ def about():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
-        if len(request.form['useremail']) > 2 and len(request.form['userpassword']) > 2:
+        useremail = request.form.get('useremail')
+        userpassword = request.form.get('userpassword')
+        # print(useremail, userpassword)
+        if len(useremail) > 2 and len(userpassword) > 2:
             flash('Данные верны!', category='alert-success')
+            res = make_response(redirect('admin'))
+            res.set_cookie('Email', useremail)
+            res.set_cookie('Password', userpassword)
         else:
             flash('Не верный логин или пароль!', category='alert-danger')
-
+        return res
     return render_template('auth/login.html', title='Авторизация')
+
+@app.route("/admin", methods=["POST", "GET"])
+def admin():
+    if request.cookies.get('Email') and request.cookies.get('Password'):
+        Email = request.cookies.get('Email')
+        Password = request.cookies.get('Password')
+    res = make_response(render_template('admin/admin.html', title='Админка', menu=adminMenu, email=Email, password=Password))
+    return res
+
+@app.route("/logout")
+def logout():
+    res = make_response(redirect('login'))
+    res.set_cookie('Email', '', 0)
+    res.set_cookie('Password', '', 0)
+    return res
 
 @app.errorhandler(404)
 def pageNotFound(error):
