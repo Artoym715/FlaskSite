@@ -2,6 +2,26 @@
 
 {% block content %}
 {{ super() }}
-<h1>Привет {{ email }} твой пароль: {{ password }}</h1>
+<h2>Таблица пользователей</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Email</th>
+      <th scope="col">Пароль</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in list %}
+    <tr>
+      <th scope="row">{{ item.id }}</th>
+      <td>{{ item.username }}</td>
+      <td>{{ item.email }}</td>
+      <td>{{ item.password }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 <a class="btn btn-danger" href="{{ url_for('logout') }}" role="button">Выход</a>
 {% endblock %}

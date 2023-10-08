@@ -1,7 +1,15 @@
 from flask import Flask, render_template, url_for, request,  flash, make_response, redirect
+from models import db, Users, Posts
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager, login_user, login_required, logout_user
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'fdhyetrdsmpaserdf7me'
+app.config['SECRET_KEY'] = 'dcad0b50abb077fe5acec19aa63e4f42d48c1396baef601f6cf5464f469661c0'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mydatabase.db"
+db.init_app(app)
+csrf = CSRFProtect(app)
+manager = LoginManager(app)
 
 adminMenu = [
 
@@ -20,6 +28,7 @@ def index():
 
 
 @app.route("/catalog/<name>")
+@login_required
 def catalog(name):
     context = {
         'category':
@@ -35,6 +44,7 @@ def catalog(name):
 
 
 @app.route("/catalog/<name>/category")
+@login_required
 def category(name):
     context = {
         'Posts':
@@ -64,45 +74,79 @@ def category(name):
 
 
 @app.route("/catalog/<name>/category/product/<int:id>")
+@login_required
 def product(name, id):
     return render_template('shop/product.html', title='Одежда', menu=menu, id=id)
 
 
 @app.route("/about")
+@login_required
 def about():
     return render_template('shop/about.html', title='О сайте', menu=menu)
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == 'POST':
-        useremail = request.form.get('useremail')
-        userpassword = request.form.get('userpassword')
-        # print(useremail, userpassword)
-        if len(useremail) > 2 and len(userpassword) > 2:
-            flash('Данные верны!', category='alert-success')
-            res = make_response(redirect('admin'))
-            res.set_cookie('Email', useremail)
-            res.set_cookie('Password', userpassword)
-        else:
-            flash('Не верный логин или пароль!', category='alert-danger')
-        return res
+    email = request.form.get('useremail')
+    password = request.form.get('userpassword')
+
+    if email and password:
+        user = Users.query.filter_by(email=email).first()
+
+        if check_password_hash(user.password, password):
+            login_user(user)
+            return redirect('admin')
     return render_template('auth/login.html', title='Авторизация')
 
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+    if request.method == 'POST':
+        name = request.form.get('username')
+        email = request.form.get('useremail')
+        password = request.form.get('userpassword')
+        password2 = request.form.get('userсonfirmpassword')
+        if len(name) > 4 and len(email) > 4 and len(password) > 4 and password == password2:
+            hash_pwd = generate_password_hash(password)
+            new_user = Users(username=name, email=email, password=hash_pwd)  # type: ignore
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Регистрация прошла успешно!', category='alert-success')
+            return redirect('login')
+        else:
+            db.session.rollback()
+            flash('Произошла ошибка!', category='alert-danger')
+            return redirect('register')
+    return render_template('auth/register.html', title='Регистрация')
+
+
+@manager.user_loader
+def load_user(users_id):
+    return Users.query.get(users_id)
+
+
 @app.route("/admin", methods=["POST", "GET"])
+@login_required
 def admin():
-    if request.cookies.get('Email') and request.cookies.get('Password'):
-        Email = request.cookies.get('Email')
-        Password = request.cookies.get('Password')
-    res = make_response(render_template('admin/admin.html', title='Админка', menu=adminMenu, email=Email, password=Password))
-    return res
+    info = []
+    try:
+        info = Users.query.all()
+    except:
+        flash('Произошла ошибка чтения БД!', category='alert-danger')
+    return render_template('admin/admin.html', title='Админка', menu=adminMenu, list=info)
+
 
 @app.route("/logout")
 def logout():
-    res = make_response(redirect('login'))
-    res.set_cookie('Email', '', 0)
-    res.set_cookie('Password', '', 0)
-    return res
+    logout_user()
+    return redirect('/')
+
+
+@app.cli.command("init-db")
+def init_db():
+    db.create_all()
+    print('OK')
+
 
 @app.errorhandler(404)
 def pageNotFound(error):

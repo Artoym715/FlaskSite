@@ -12,6 +12,7 @@
 </div>
 {% endfor %}
 <form class="mt-4" action="/login" method="post">
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 	<div class="mb-3">
 		<label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
 		<input type="email" name="useremail" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -23,7 +24,9 @@
 		<input type="password" name="userpassword" class="form-control" id="exampleInputPassword1">
 		<div id="passwordHelpBlock" class="form-text">
 			Ваш пароль должен состоять из 8-20 символов, содержать буквы и цифры и не должен содержать пробелов,
-			специальных символов или эмодзи.
+			специальных символов или эмодзи.<br/>
+			<br/>
+			Нет логина - <a href="{{ url_for('register') }}">Регистрация</a>
 		</div>
 	</div>
 	<button type="submit" class="btn btn-primary">Войти</button>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ super() }}
+<div class="col-12">
+	<h2 class="m-3 text-center">Регистрация</h2>
+</div>
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="col-12">
+	<div class="alert {{ cat }}" role="alert">
+		{{ msg }}
+	</div>
+</div>
+{% endfor %}
+<form class="mt-4" action="/register" method="post">
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="mb-3">
+		<label for="exampleInputName" class="form-label" >Имя</label>
+		<input type="text" name="username" class="form-control" id="exampleInputName" required>
+	</div>
+	<div class="mb-3">
+
+		<label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
+		<input type="email" name="useremail" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+			required>
+		<div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
+	</div>
+	<div class="mb-3">
+		<label for="exampleInputPassword1" class="form-label">Пароль</label>
+		<input type="password" name="userpassword" class="form-control" id="exampleInputPassword1" required>
+		<div id="passwordHelpBlock" class="form-text">
+			Ваш пароль должен состоять из 8-20 символов, содержать буквы и цифры и не должен содержать пробелов,
+			специальных символов или эмодзи.
+		</div>
+	</div>
+    <div class="mb-3">
+		<label for="InputConfirmPassword" class="form-label">Повторите пароль</label>
+		<input type="password" name="userсonfirmpassword" class="form-control" id="InputConfirmPassword" required>
+		<div id="ConfirmPasswordHelpBlock" class="form-text">
+			Ваш пароль должен состоять из 8-20 символов, содержать буквы и цифры и не должен содержать пробелов,
+			специальных символов или эмодзи.
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary">Регистрация</button>
+</form>
+{% endblock %}
